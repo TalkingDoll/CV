@@ -25,7 +25,7 @@ jobs:
           
           # [OPTIONAL] If your document requires the xelatex compiler (e.g., for certain fonts or packages),
           # keep this line. If you use pdflatex, you can remove this line.
-          # compiler: pdflatex
+          compiler: pdflatex
 
       # Step 3: Commit the generated PDF file back to your repository.
       - name: Commit PDF
