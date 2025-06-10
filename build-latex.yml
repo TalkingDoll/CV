@@ -1,0 +1,39 @@
+# GitHub Action for building a LaTeX document
+name: Build LaTeX CV
+
+# Trigger condition: Runs whenever code is pushed to the main branch.
+on:
+  push:
+    branches:
+      - main  # [IMPORTANT] Change to 'master' if your main branch is named 'master'
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out your repository's code so the job can access it.
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+
+      # Step 2: Compile the LaTeX document into a PDF.
+      # This uses a popular and well-maintained action for LaTeX.
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          # [IMPORTANT] Replace 'main.tex' with the root .tex file of your resume.
+          root_file: cv.tex
+          
+          # [OPTIONAL] If your document requires the xelatex compiler (e.g., for certain fonts or packages),
+          # keep this line. If you use pdflatex, you can remove this line.
+          compiler: pdflatex
+
+      # Step 3: Commit the generated PDF file back to your repository.
+      - name: Commit PDF
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "CI: Automatically build and update CV PDF"
+          # [IMPORTANT] Make sure this filename matches your compiled PDF output file.
+          file_pattern: cv.pdf
+          commit_user_name: "GitHub Actions Bot"
+          commit_user_email: "actions@github.com"
+          commit_author: "GitHub Actions Bot <actions@github.com>"
