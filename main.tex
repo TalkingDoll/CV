@@ -3,10 +3,27 @@
 
 % Default font is the helvetica postscript font
 \usepackage{helvet}
+\usepackage{xcolor}
 
 % Increase text height
 \textheight=700pt
 
+% res.cls uses \nofiles; restore auxiliary-file writing for biblatex/Biber.
+\makeatletter
+\@fileswtrue
+\makeatother
+\usepackage[backend=biber,style=numeric,sorting=ydnt,defernumbers=true,
+  giveninits=true,maxbibnames=99,doi=true,url=true,isbn=false]{biblatex}
+\addbibresource{mypub.bib}
+% Highlight only Yuanchao Xu; keep other authors in the normal style.
+% Match Yuanchao and the earlier abbreviated given name; print fixed initials.
+\renewcommand*{\mkbibcompletename}[1]{%
+  \ifboolexpr{test {\ifdefstring{\namepartfamily}{Xu}} and
+              (test {\ifdefstring{\namepartgiven}{Yuanchao}} or test {\ifdefstring{\namepartgiven}{Y.}} or test {\ifdefstring{\namepartgiven}{Y}})}
+    {\textcolor{black}{\underline{\textbf{Y.\nobreakspace Xu}}}}
+    {#1}}
+\setlength{\bibitemsep}{0.5\baselineskip}
+\setlength{\emergencystretch}{2em}
 % Make clickable links
 \usepackage{hyperref}
 \hypersetup{
@@ -49,7 +66,7 @@ Visiting Postdoc, Applied Mathematics\\
 April 2026 - August 2026 
 
 \textbf{Kyoto University}\\
-Postdoc, \href{https://sci.kyoto-u.ac.jp/en/search/tag?tag=SACRA}{SACRA}\\
+Program-Specific Researcher, \href{https://sci.kyoto-u.ac.jp/en/search/tag?tag=SACRA}{SACRA}\\
 September 2025 - August 2030 
 
 
@@ -110,37 +127,11 @@ January 2015 - December 2017
 
 
 \section{Research}
+\nocite{*}
+\printbibliography[heading=none,notkeyword=duplicate,notkeyword=draft]
 
-\begin{enumerate}
-    \item Galerkin Approximation and Finite-Data Error Analysis for Stochastic Dynamic Mode Decomposition of It\^o Diffusions (Submitted) (2026) ({\sl Single author})
-    
-    \item Dictionary-Induced Boundary Realizations and Noncommuting Limits in Koopman Generator Approximation (Submitted) (2026) ({\sl Single author})
-    
-    \item Logarithmic Suspension Response for Lorenz-Type Models with a Moving Singular Stable Leaf (Submitted) (2026) ({\sl Single author})
-    
-    \item A Variational Galerkin Framework for Spectral Learning and Forecasting with Backward-Operator Estimators (In preperation, 2025) ({\sl 1st author})
-    
-    \item Generative Modeling through Koopman Spectral Analysis: An Operator-Theoretic Perspective
-    (\href{https://arxiv.org/abs/2512.18837}{arXiv}, 2025) ({\sl 1st author})
-    
-    \item Reinforcement-learning-guided data-driven estimation of spectral properties of stochastic Koopman semigroups (\href{https://www.aimsciences.org/article/doi/10.3934/dcdsi.A260201}{DCDS-I}, 2025) ({\sl 1st author})
-    
-    \item Spectral analysis of Koopman operator through pseudo-resolvent (Submitted) (\href{https://arxiv.org/abs/2512.24953}{arXiv}, 2025) ({\sl 1st author})
-    
-    \item A Data-Driven Framework for Koopman Semigroup Estimation in Stochastic Dynamical Systems (\href{https://arxiv.org/abs/2501.13301}{Chaos}, 2025) ({\sl 1st author})
-
-    \item Koopman Eigenfunctions Links Multiscale State-Dependent Brain Dynamics (In preperation, 2025)
-
-    \item ResKoopNet: Learning Koopman Representations for Complex Dynamics with Spectral Residuals (\href{https://icml.cc/virtual/2025/poster/45196}{ICML2025}, Vancouver, Canada, 2025) ({\sl 1st author})
-
-    \item  Koopman Spectral Analysis Uncovers the Temporal Structure of Spontaneous Neural Events (\href{https://static1.squarespace.com/static/6102ca347474c263c40150cd/t/65e1abbdf843e41837fc9c0d/1709288389623/Cosyne2024_program_book.pdf}{COSYNE (poster)}, Lisbon, Portugal, 2024)
-
-    \item Decentralized Multi-Agent Reinforcement Learning for Task Offloading Under Uncertainty (\href{https://arxiv.org/abs/2107.08114}{arXiv}, 2021) ({\sl 1st author})
-
-    % \item Echo State Neural Networks \href{https://www.researchgate.net/profile/Yuanchao-Xu/publication/340167246_Machine_Learning_With_Echo_State_Networks/links/5f1744f0299bf1720d56fb32/Machine-Learning-With-Echo-State-Networks.pdf}{\sl (\textit{Master Thesis})}, 2020
-
-\end{enumerate}
-
+\section{Submitted /\\In Preparation}
+\printbibliography[heading=none,keyword=draft]
 
 \section{Talk}
 \begin{enumerate}
@@ -239,3 +230,4 @@ Young Associate Editor: DCDS-I
 
 \end{resume}
 \(\)\end{document}
+

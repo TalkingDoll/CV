@@ -1,0 +1,31 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=25mm]{geometry}
+\usepackage[backend=biber,style=numeric,sorting=ydnt,defernumbers=true,
+  giveninits=true,maxbibnames=99,doi=true,url=true,isbn=false]{biblatex}
+\addbibresource{mypub.bib}
+% Highlight only Yuanchao Xu; keep other authors in the normal style.
+% Match Yuanchao and the earlier abbreviated given name; print fixed initials.
+\renewcommand*{\mkbibcompletename}[1]{%
+  \ifboolexpr{test {\ifdefstring{\namepartfamily}{Xu}} and
+              (test {\ifdefstring{\namepartgiven}{Yuanchao}} or test {\ifdefstring{\namepartgiven}{Y.}} or test {\ifdefstring{\namepartgiven}{Y}})}
+    {\textcolor{black}{\underline{\textbf{Y.\nobreakspace Xu}}}}
+    {#1}}
+\usepackage[hidelinks]{hyperref}
+\setlength{\bibitemsep}{0.7\baselineskip}
+\setlength{\emergencystretch}{2em}
+\title{Publication List}
+\author{Yuanchao Xu}
+\date{\today}
+\begin{document}
+\maketitle
+\nocite{*}
+% Exclude alternate repository versions and unpublished CV-only manuscripts.
+\printbibliography[title={Publications and Preprints},notkeyword=duplicate,notkeyword=draft]
+% Remove the following line to show only the Scholar publications.
+\clearpage
+\printbibliography[title={Submitted and In Preparation},keyword=draft]
+\end{document}
+

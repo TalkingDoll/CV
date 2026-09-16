@@ -1,0 +1,206 @@
+% !BIB program = biber
+% 中文简历入口；与 main.tex 共用 res.cls 和 mypub.bib。
+% 同时支持 XeLaTeX 和 pdfLaTeX，文件保持 UTF-8 编码。
+% 编译：所选引擎 main_chinese.tex -> biber main_chinese
+%       -> 所选引擎 main_chinese.tex -> 所选引擎 main_chinese.tex
+% 自动编译：latexmk -xelatex main_chinese.tex 或 latexmk -pdf main_chinese.tex
+% Overleaf：主文档选择 main_chinese.tex，编译器可选 XeLaTeX 或 pdfLaTeX。
+% 切换编译器时，请清理辅助文件（Overleaf：Recompile from scratch）。
+% pdfLaTeX 需要 CJK/ctex 和 Arphic 字体包（含 gbsn 宋体）。
+\documentclass[margin]{res}
+
+% scheme=plain 保留 res.cls 的章节样式；按引擎选择中文字体。
+% 两种配置均使用 TeX 发行版提供的字体，不依赖系统专有中文字体。
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+  % ctex 自动启用 CJKutf8；禁用不兼容 pdfLaTeX 的 Fandol 字体配置。
+  \usepackage[UTF8,scheme=plain,fontset=none]{ctex}
+  \renewcommand{\CJKrmdefault}{gbsn}
+  \renewcommand{\CJKsfdefault}{gbsn}
+  \renewcommand{\CJKttdefault}{gbsn}
+\else
+  \usepackage[UTF8,scheme=plain,fontset=fandol]{ctex}
+\fi
+\usepackage{helvet}
+\usepackage{xcolor}
+
+% 用现代字体命令替代旧模板的 \bf，保持中英文标题的粗体一致。
+\renewcommand{\sectionfont}{\bfseries}
+\renewcommand{\namefont}{\large\bfseries}
+
+\textheight=700pt
+
+% res.cls 默认使用 \nofiles；恢复辅助文件写入以支持 biblatex/Biber。
+\makeatletter
+\@fileswtrue
+\makeatother
+\usepackage[backend=biber,style=numeric,sorting=ydnt,defernumbers=true,
+  giveninits=true,maxbibnames=99,doi=true,url=true,isbn=false]{biblatex}
+\addbibresource{mypub.bib}
+
+% 与英文版一致：仅强调 Yuanchao Xu，兼容全名和姓名缩写。
+\renewcommand*{\mkbibcompletename}[1]{%
+  \ifboolexpr{test {\ifdefstring{\namepartfamily}{Xu}} and
+              (test {\ifdefstring{\namepartgiven}{Yuanchao}} or test {\ifdefstring{\namepartgiven}{Y.}} or test {\ifdefstring{\namepartgiven}{Y}})}
+    {\textcolor{black}{\underline{\textbf{Y.\nobreakspace Xu}}}}
+    {#1}}
+\setlength{\bibitemsep}{0.5\baselineskip}
+\setlength{\emergencystretch}{2em}
+
+% 仅在中文版中翻译文献状态；论文题名、作者及出版信息保持原文。
+\DeclareFieldFormat{note}{%
+  \ifstrequal{#1}{Preprint}{预印本}{%
+  \ifstrequal{#1}{Poster}{海报}{%
+  \ifstrequal{#1}{Submitted}{已投稿}{%
+  \ifstrequal{#1}{In preparation}{准备中}{#1}}}}}
+
+\usepackage[hidelinks,unicode]{hyperref}
+\hypersetup{pdftitle={Yuanchao Xu - 中文简历},pdfauthor={Yuanchao Xu}}
+\renewcommand{\today}{\number\year 年\number\month 月\number\day 日}
+
+\begin{document}
+
+% 原项目只提供英文姓名；可在此替换为本人确认的中文姓名。
+\name{\href{https://sites.google.com/view/yuanchao/home}{Yuanchao Xu}}
+\address{%
+  \begin{minipage}{\linewidth}
+    \centering
+    \href{mailto:xu.yuanchao.3a@kyoto-u.ac.jp}{xu.yuanchao.3a@kyoto-u.ac.jp}\\[0.5ex]
+    京都大学 益川教育研究馆 4-405 室\\
+    \today
+  \end{minipage}%
+}
+
+\begin{resume}
+
+\section{工作经历}
+
+\textbf{阿尔伯塔大学}\\
+访问博士后，应用数学\\
+2026年4月 -- 2026年8月
+
+\textbf{京都大学}\\
+特定研究员，\href{https://sci.kyoto-u.ac.jp/en/search/tag?tag=SACRA}{SACRA}\\
+2025年9月 -- 2030年8月
+
+\section{教育经历}
+
+\textbf{阿尔伯塔大学}\\
+应用数学博士（获博士学位论文奖）\\
+2021年9月 -- 2025年8月
+
+\textbf{曼尼托巴大学}\\
+数学理学硕士\\
+2018年9月 -- 2020年8月
+
+\textbf{俄勒冈大学}\\
+数学理学学士（荣誉毕业，Cum Laude）\\
+2015年1月 -- 2017年12月
+
+\section{研究兴趣}
+
+我的研究聚焦于随机动力系统的数据驱动方法，尤其关注学习随机 Koopman 算子的理论框架，以及这些方法在计算神经科学、强化学习和生成建模等复杂实际问题中的应用。
+
+\begin{format}
+\title{l}\\
+\dates{l}\location{r}\\
+\body\\
+\end{format}
+
+\section{论文与预印本}
+\nocite{*}
+\printbibliography[heading=none,notkeyword=duplicate,notkeyword=draft]
+
+\section{已投稿与\\准备中论文}
+\printbibliography[heading=none,keyword=draft]
+
+\section{学术报告}
+\begin{enumerate}
+    \item 基于 Koopman 谱分析的生成建模\\
+    \textbf{麻省理工学院}，美国马萨诸塞州剑桥，2026年4月27日
+
+    \item 基于 Koopman 谱分析的生成建模\\
+    CMS 专题研讨会\\
+    \textbf{加州理工学院}，美国加利福尼亚州帕萨迪纳，2026年4月13日
+
+    \item 基于 Koopman 谱分析的生成建模\\
+    \href{https://naturalsciences.uoregon.edu/mathematics/seminars}{概率论研讨会}\\
+    \textbf{俄勒冈大学}，美国俄勒冈州尤金，2026年4月8日
+
+    \item 基于 Koopman 谱分析的生成建模\\
+    \href{https://sites.google.com/view/mlds-deds-2026}{MLDS 5 \& DEDS 2026}\\
+    \textbf{京都大学}，日本京都，2026年2月9--13日
+
+    \item 基于 Koopman 谱分析的生成建模\\
+    \href{https://www.youtube.com/watch?v=FDEGkddluls&t=893s}{机器学习与动力系统研讨会}\\
+    \textbf{艾伦·图灵研究所}，英国伦敦，2026年1月8日（线上）
+
+    \item 复杂动力系统建模的数据驱动 Koopman 框架\\
+    \textbf{复旦大学}，中国上海，2026年1月5日
+
+    \item 复杂动力系统建模的数据驱动 Koopman 框架\\
+    \textbf{欧洲分子生物学实验室}，意大利罗马，2025年11月24日（线上）
+
+    \item 复杂动力系统建模的数据驱动 Koopman 框架\\
+    \textbf{于贝尔·居里安实验室（Laboratoire Hubert Curien）}，法国圣艾蒂安，2025年10月14日
+
+    \item 学习随机 Koopman 算子的扰动方法\\
+    \href{https://docs.google.com/spreadsheets/d/1XrgG53J6HlsHYLRHtYFsj5s32eWDr9B_/edit?gid=1512777206#gid=1512777206}{CREST}\\
+    \textbf{理化学研究所（RIKEN）}，日本神户，2024年12月26--28日
+
+    \item 从复杂系统中提取动力学：确定性与随机性视角\\
+    \textbf{华东理工大学}，中国上海，2024年12月19日
+\end{enumerate}
+
+\section{学术访问}
+% 原英文文件前五项未标年份，此处保留原始日期，不推测补全。
+\begin{enumerate}
+    \item 麻省理工学院，美国马萨诸塞州剑桥，4月27--30日
+    \item 康奈尔大学，美国纽约州伊萨卡，4月16--18日
+    \item 加州理工学院，美国加利福尼亚州帕萨迪纳，4月13--15日
+    \item 加州大学圣巴巴拉分校，美国加利福尼亚州圣巴巴拉，4月10日
+    \item 俄勒冈大学，美国俄勒冈州尤金，4月6--9日
+    \item 复旦大学，中国上海，2026年1月5--9日
+    \item 于贝尔·居里安实验室（Laboratoire Hubert Curien）\\
+    法国圣艾蒂安，2025年10月14--15日
+    \item 欧洲分子生物学实验室，意大利罗马，2025年10月11--13日
+    \item 意大利技术研究院（Istituto Italiano di Tecnologia）\\
+    意大利热那亚，2025年10月9--10日
+    \item 爱媛大学，日本松山，2024年12月23--25日
+\end{enumerate}
+
+\section{审稿工作}
+
+ICML 2026、ICLR 2026、IEEE-TNNLS、IEEE-TETCI
+
+\section{学术服务}
+
+DCDS-I 青年编委（Young Associate Editor）
+
+\section{奖励与荣誉}
+
+\textbullet{} 理学院博士学位论文奖（Faculty of Science Doctoral Dissertation Award），2025年\\
+\textbullet{} Mary Louise Imrie 研究生奖，2025年\\
+\textbullet{} Dr. Josephine M. Mitchell 招生奖学金，2021年\\
+\textbullet{} 国际研究生入学奖学金，2020年\\
+\textbullet{} 国际研究生入学奖学金，2018年\\
+\textbullet{} Clarence and Lucille Dunbar 奖学金，2017年
+
+\section{教学经历}
+
+Math 102 应用线性代数（习题课）\hfill 2025年冬季\\
+Math 209 工程微积分 III（习题课）\hfill 2024年秋季\\
+Math 209 工程微积分 III（习题课）\hfill 2024年春季\\
+Math 102 应用线性代数（习题课）\hfill 2024年冬季\\
+Math 201 微分方程（习题课）\hfill 2023年秋季\\
+Math 101 工程微积分 II（习题课）\hfill 2023年春季\\
+Math 201 微分方程（习题课）\hfill 2023年冬季\\
+研究生科研助理\hfill 2020年9月 -- 2021年8月\\
+研究生教学助理\hfill 2018年9月 -- 2020年8月\\
+本科生教学助理\hfill 2016年9月 -- 2017年12月\\
+本科生数学辅导教师\hfill 2016年4月 -- 2017年12月
+
+\end{resume}
+\end{document}
